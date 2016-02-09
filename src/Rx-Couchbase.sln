@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Couchbase.Reactive", "Couchbase.Reactive\Couchbase.Reactive.csproj", "{132AF7CC-9157-4D38-A7B6-9F49A67903FB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Couchbase.Reactive.IntegrationTests", "Couchbase.Reactive.IntegrationTests\Couchbase.Reactive.IntegrationTests.csproj", "{963F4A95-B954-4D2A-8BB7-AEB718B58505}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Couchbase.Reactive.UnitTests", "Couchbase.Reactive.UnitTests\Couchbase.Reactive.UnitTests.csproj", "{A7337740-FC0C-4B70-B27E-C3407E8B017A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{963F4A95-B954-4D2A-8BB7-AEB718B58505}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{963F4A95-B954-4D2A-8BB7-AEB718B58505}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{963F4A95-B954-4D2A-8BB7-AEB718B58505}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7337740-FC0C-4B70-B27E-C3407E8B017A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7337740-FC0C-4B70-B27E-C3407E8B017A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7337740-FC0C-4B70-B27E-C3407E8B017A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7337740-FC0C-4B70-B27E-C3407E8B017A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

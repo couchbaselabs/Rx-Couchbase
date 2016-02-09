@@ -7,24 +7,29 @@ using System.Threading.Tasks;
 
 namespace Couchbase.Reactive
 {
-    public class CouchbaseViewQueryException : ApplicationException
+    /// <summary>
+    /// Base class for exceptions wrapping errors returned by view requests via the Reactive engine.
+    /// </summary>
+    public abstract class CouchbaseViewQueryException : CouchbaseReactiveException
     {
-        private readonly HttpStatusCode _statusCode;
-        public HttpStatusCode StatusCode
+        /// <summary>
+        /// The HTTP Status Code for the request.
+        /// </summary>
+        public abstract HttpStatusCode StatusCode { get; }
+
+        /// <summary>
+        /// A View engine specific error message if one occurred.
+        /// </summary>
+        public abstract string Error { get; }
+
+        internal CouchbaseViewQueryException(string message)
+            : base(message)
         {
-            get { return _statusCode; }
         }
 
-        private readonly string _error;
-        public string Error
+        internal CouchbaseViewQueryException(string message, Exception innerException)
+            : base(message, innerException)
         {
-            get { return _error; }
-        }
-        internal CouchbaseViewQueryException(HttpStatusCode statusCode, string error)
-            : base(error)
-        {
-            _statusCode = statusCode;
-            _error = error;
         }
     }
 }

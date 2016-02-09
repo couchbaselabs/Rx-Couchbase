@@ -33,58 +33,55 @@ namespace Couchbase.Reactive
         {
             var disposed = false;
 
-            var task = _bucket.QueryAsync<T>(_query);
-
-            // Pass exceptions to the observer as an error
-            task.ContinueWith(t =>
+            try
             {
-                if (!disposed)
-                {
-                    observer.OnError((Exception) t.Exception ?? new InvalidOperationException("Unknown Error"));
-                }
-            }, TaskContinuationOptions.OnlyOnFaulted);
+                var task = _bucket.QueryAsync<T>(_query);
 
-            // Pass canceled tasks as completion to the observer
-            task.ContinueWith(t =>
-            {
-                if (!disposed)
+                // Pass exceptions to the observer as an error
+                task.ContinueWith(t =>
                 {
-                    observer.OnCompleted();
-                }
-            }, TaskContinuationOptions.OnlyOnCanceled);
-
-            // Handle successful task completion
-            task.ContinueWith(t =>
-            {
-                if (!disposed)
-                {
-                    if (t.Result.Success)
+                    if (!disposed)
                     {
-                        // On success, deliver all rows to the observer
+                        observer.OnError((Exception) t.Exception ?? new InvalidOperationException("Unknown Error"));
+                    }
+                }, TaskContinuationOptions.OnlyOnFaulted);
 
-                        foreach (var row in t.Result.Rows)
-                        {
-                            observer.OnNext(row);
-                        }
-
+                // Pass canceled tasks as completion to the observer
+                task.ContinueWith(t =>
+                {
+                    if (!disposed)
+                    {
                         observer.OnCompleted();
                     }
-                    else
+                }, TaskContinuationOptions.OnlyOnCanceled);
+
+                // Handle successful task completion
+                task.ContinueWith(t =>
+                {
+                    if (!disposed)
                     {
-                        // On view error, deliver as an error to the observer
-                        if (t.Result.Exception != null)
+                        if (t.Result.Success)
                         {
-                            observer.OnError(t.Result.Exception);
+                            // On success, deliver all rows to the observer
+
+                            foreach (var row in t.Result.Rows)
+                            {
+                                observer.OnNext(row);
+                            }
+
+                            observer.OnCompleted();
                         }
                         else
                         {
-                            var ex = new CouchbaseN1QlQueryException(t.Result.Status, t.Result.Errors);
-
-                            observer.OnError(ex);
+                            observer.OnError(new CouchbaseN1QlQueryException<T>(t.Result));
                         }
                     }
-                }
-            }, TaskContinuationOptions.OnlyOnRanToCompletion);
+                }, TaskContinuationOptions.OnlyOnRanToCompletion);
+            }
+            catch (Exception ex)
+            {
+                observer.OnError(ex);
+            }
 
             return Disposable.Create(() => disposed = true);
         }

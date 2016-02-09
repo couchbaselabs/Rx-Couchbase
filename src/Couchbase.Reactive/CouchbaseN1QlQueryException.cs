@@ -8,26 +8,24 @@ using Couchbase.N1QL;
 
 namespace Couchbase.Reactive
 {
-    public class CouchbaseN1QlQueryException : ApplicationException
+    /// <summary>
+    /// Base class for exceptions wrapping errors returned by N1QL query requests via the Reactive engine.
+    /// </summary>
+    public abstract class CouchbaseN1QlQueryException : CouchbaseReactiveException
     {
-        private readonly QueryStatus _status;
-        public QueryStatus Status
-        {
-            get { return _status; }
-        }
+        /// <summary>
+        /// Gets the status of the request.
+        /// </summary>
+        public abstract QueryStatus Status { get; }
 
-        private readonly IList<Error> _errors;
-        public IList<Error> Errors
+        /// <summary>
+        /// Gets a list of zero or more error objects.
+        /// </summary>
+        public abstract IList<Error> Errors { get; }
+
+        internal CouchbaseN1QlQueryException(string message, Exception innerException)
+            : base(message, innerException)
         {
-            get { return _errors; }
-        }
-        internal CouchbaseN1QlQueryException(QueryStatus status, IList<Error> errors)
-            : base(errors != null && errors.Count == 1 ?
-                       errors.First().Message :
-                       "N1QL query error, see Status and Errors properties for details.")
-        {
-            _status = status;
-            _errors = errors;
         }
     }
 }
